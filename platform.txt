@@ -1,0 +1,68 @@
+# BL602 Arduino Platform Configuration
+# https://github.com/Ishu1519/BL602-Arduino-Core
+
+name=BL602 Arduino Core
+version=0.1.0
+
+# ============================================================
+# IMPORTANT: Build System Note
+# ============================================================
+# This core currently requires the Bouffalo BL602 SDK build
+# system (make) to compile firmware. The Arduino IDE compile
+# button is not yet functional because the core depends on SDK
+# headers and libraries not bundled in this package.
+#
+# See docs/building-from-source.md for instructions.
+# ============================================================
+
+# RISC-V GCC Toolchain
+compiler.path={runtime.tools.riscv-none-embed-gcc.path}/bin/
+compiler.c.cmd=riscv-none-embed-gcc
+compiler.cpp.cmd=riscv-none-embed-g++
+compiler.ar.cmd=riscv-none-embed-ar
+compiler.ar.flags=rcs
+compiler.c.elf.cmd=riscv-none-embed-gcc
+compiler.elf2hex.cmd=riscv-none-embed-objcopy
+compiler.size.cmd=riscv-none-embed-size
+compiler.c.extra_flags=
+compiler.cpp.extra_flags=
+compiler.c.elf.extra_flags=
+compiler.c.elf.libs=-lm
+
+# RISC-V Architecture Flags
+compiler.riscv.flags=-march=rv32imfc -mabi=ilp32f -DARCH_RISCV -DBL602 -DCFG_FREERTOS
+compiler.warning_flags=-Wall
+compiler.warning_flags.none=-w
+compiler.warning_flags.default=
+compiler.warning_flags.more=-Wall
+compiler.warning_flags.all=-Wall -Wextra
+
+# Compile C
+compiler.c.flags=-c -g -Os {compiler.warning_flags} -std=gnu99 -ffunction-sections -fdata-sections {compiler.riscv.flags}
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+# Compile C++
+compiler.cpp.flags=-c -g -Os {compiler.warning_flags} -std=gnu++11 -fno-rtti -fno-exceptions -ffunction-sections -fdata-sections {compiler.riscv.flags}
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+# Archive
+recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} "{archive_file_path}" "{object_file}"
+
+# Link
+compiler.c.elf.flags=-Os -g -Wl,--gc-sections -march=rv32imfc -mabi=ilp32f -nostartfiles
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} -o "{build.path}/{build.project_name}.elf" {object_files} "{build.path}/{archive_file}" -Wl,--start-group {compiler.c.elf.libs} -Wl,--end-group
+
+# Binary
+recipe.objcopy.bin.pattern="{compiler.path}{compiler.elf2hex.cmd}" -O binary "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
+
+# Size
+recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build.project_name}.elf"
+recipe.size.regex=^\.text\s+([0-9]+).*
+recipe.size.regex.data=^\.data\s+([0-9]+).*
+
+# Upload
+tools.bflb_iot_tool.cmd=bflb_iot_tool
+tools.bflb_iot_tool.path={runtime.tools.bflb_iot_tool.path}
+tools.bflb_iot_tool.upload.params.verbose=--verbose
+tools.bflb_iot_tool.upload.params.quiet=
+tools.bflb_iot_tool.upload.pattern="{path}/{cmd}" --chipname=bl602 --interface=uart --port={serial.port} --baudrate={upload.speed} --firmware="{build.path}/{build.project_name}.bin"

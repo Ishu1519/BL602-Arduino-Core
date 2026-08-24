@@ -1,0 +1,2 @@
+# BL602 Arduino Programmers
+# Currently empty - BL602 uses UART bootloader for flashing.

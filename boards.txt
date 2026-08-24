@@ -1,0 +1,28 @@
+# BL602 Arduino Board Configuration
+# https://github.com/Ishu1519/BL602-Arduino-Core
+
+menu.UploadSpeed=Upload Speed
+
+# ==========================================
+# Bouffalo Lab BL602 (2MB Flash)
+# ==========================================
+bl602.name=Bouffalo Lab BL602
+
+bl602.upload.tool=bflb_iot_tool
+bl602.upload.protocol=uart
+bl602.upload.maximum_size=2097152
+bl602.upload.maximum_data_size=276480
+bl602.upload.wait_for_upload_port=true
+bl602.upload.speed=115200
+
+bl602.build.mcu=bl602
+bl602.build.f_cpu=160000000L
+bl602.build.board=BL602
+bl602.build.core=bl602
+bl602.build.variant=bl602c40
+bl602.build.flash_size=2MB
+
+bl602.menu.UploadSpeed.115200=115200
+bl602.menu.UploadSpeed.115200.upload.speed=115200
+bl602.menu.UploadSpeed.2000000=2000000
+bl602.menu.UploadSpeed.2000000.upload.speed=2000000
