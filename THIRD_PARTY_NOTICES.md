@@ -55,3 +55,15 @@ by the Arduino project.
 
 - Website: https://www.arduino.cc/
 - SPDX: LGPL-2.1-or-later
+
+---
+
+## Bouffalo Lab Flashing Tools (bflb_iot_tool & eflash_loader)
+
+**License**: Apache License 2.0 / Bouffalo Lab BSD-style Notice
+
+The flb_iot_tool utility, eflash loader helper binaries, and flash configuration
+profiles are provided by Bouffalo Lab for programming BL602 microcontrollers.
+
+- Repository: https://github.com/bouffalolab/bouffalo_sdk
+- SPDX: Apache-2.0

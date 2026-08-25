@@ -62,11 +62,14 @@ recipe.size.regex=^\.text\s+([0-9]+).*
 recipe.size.regex.data=^\.data\s+([0-9]+).*
 
 # Upload
-tools.bflb_iot_tool.cmd=bflb_iot_tool
 tools.bflb_iot_tool.path={runtime.tools.bflb_iot_tool.path}
+tools.bflb_iot_tool.cmd=bflb_iot_tool
+tools.bflb_iot_tool.cmd.windows=bflb_iot_tool.exe
+tools.bflb_iot_tool.cmd.linux=bflb_iot_tool-ubuntu
+tools.bflb_iot_tool.cmd.macosx=bflb_iot_tool-macos
 tools.bflb_iot_tool.upload.params.verbose=--verbose
 tools.bflb_iot_tool.upload.params.quiet=
-tools.bflb_iot_tool.upload.pattern="{path}/{cmd}" --chipname=bl602 --interface=uart --port={serial.port} --baudrate={upload.speed} --firmware="{build.path}/{build.project_name}.bin"
+tools.bflb_iot_tool.upload.pattern="{path}/{cmd}" --chipname=bl602 --interface=uart --port={serial.port} --baudrate={upload.speed} "--firmware={build.path}/{build.project_name}.bin"
 
 
 
@@ -75,6 +78,7 @@ recipe.S.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -x assem
 build.extra_flags=
 compiler.c.extra_flags=
 compiler.cpp.extra_flags=
+
 
 
 
