@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" width="100%" height="100%">
+  <defs>
+    <linearGradient id="wfBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#EDF2F7"/>
+    </linearGradient>
+    <filter id="boxShadow" x="-3%" y="-3%" width="106%" height="108%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="620" fill="url(#wfBg)" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="34" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="bold" fill="#1A202C" text-anchor="middle">BL602 End-to-End Development &amp; Flash Pipeline</text>
+  <text x="450" y="52" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#718096" text-anchor="middle">From Boards Manager Package URL to Physical Silicon Execution</text>
+
+  <!-- 1. Boards Manager -->
+  <g filter="url(#boxShadow)" transform="translate(50, 70)">
+    <rect width="800" height="70" rx="8" fill="#FFFFFF" stroke="#CBD5E0" stroke-width="1.5"/>
+    <rect x="0" y="0" width="8" height="70" rx="4" fill="#00979D"/>
+    <text x="30" y="28" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="bold" fill="#00979D">1. Arduino Boards Manager Auto-Resolution</text>
+    <text x="30" y="48" font-family="Consolas, Monaco, monospace" font-size="11" fill="#4A5568">URL: https://raw.githubusercontent.com/Ishu1519/BL602-Arduino-Core/main/package_bl602_index.json</text>
+    <text x="30" y="63" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#718096">Downloads: Xuantie-900-gcc (2.6.1)  +  bflb_iot_tool (1.8.6 rev2)  +  BL602 Core (0.1.0-alpha.3)</text>
+  </g>
+
+  <!-- Line -->
+  <line x1="450" y1="140" x2="450" y2="160" stroke="#A0AEC0" stroke-width="2"/>
+
+  <!-- 2. Compilation -->
+  <g filter="url(#boxShadow)" transform="translate(50, 160)">
+    <rect width="800" height="80" rx="8" fill="#FFFFFF" stroke="#CBD5E0" stroke-width="1.5"/>
+    <rect x="0" y="0" width="8" height="80" rx="4" fill="#3182CE"/>
+    <text x="30" y="26" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="bold" fill="#2B6CB0">2. Compilation &amp; Static Linking</text>
+    <text x="30" y="46" font-family="Consolas, Monaco, monospace" font-size="11" fill="#2D3748">riscv64-unknown-elf-gcc -march=rv32imafc -mabi=ilp32f -nostartfiles -Tflash_rom.ld</text>
+    <text x="30" y="62" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#718096">Links: libbl602.a, libfreertos_riscv_ram.a, libbl602_std.a, libwifi.a, libblecontroller_602_std.a</text>
+    <text x="30" y="74" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#4A5568">Generates: firmware ELF &amp; binary image (test_sketch.ino.bin)</text>
+  </g>
+
+  <!-- Line -->
+  <line x1="450" y1="240" x2="450" y2="260" stroke="#A0AEC0" stroke-width="2"/>
+
+  <!-- 3. Upload & Handshake -->
+  <g filter="url(#boxShadow)" transform="translate(50, 260)">
+    <rect width="800" height="100" rx="8" fill="#FFFFFF" stroke="#CBD5E0" stroke-width="1.5"/>
+    <rect x="0" y="0" width="8" height="100" rx="4" fill="#DD6B20"/>
+    <text x="30" y="26" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="bold" fill="#C05621">3. Automated UART Flashing (bflb_iot_tool)</text>
+    <text x="30" y="46" font-family="Consolas, Monaco, monospace" font-size="11" fill="#2D3748">bflb_iot_tool.exe --chipname=bl602 --interface=uart --port=COM7 --baudrate=115200 --firmware=sketch.bin</text>
+    <text x="30" y="64" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#718096">• UART Sync Handshake (0x4f4b) ? Sends on-chip RAM helper: eflash_loader_v2.5.1 (38,784 B)</text>
+    <text x="30" y="80" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#718096">• Queries JEDEC ID ? Returns 0xc8401680 ? Matches GD25Q32C_c84016.conf (4MB Quad-SPI)</text>
+    <text x="30" y="94" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#276749" font-weight="bold">? Eliminates 003D "BFLB FLASH MATCH TYPE FAIL" error</text>
+  </g>
+
+  <!-- Line -->
+  <line x1="450" y1="360" x2="450" y2="380" stroke="#A0AEC0" stroke-width="2"/>
+
+  <!-- 4. Flash Verification -->
+  <g filter="url(#boxShadow)" transform="translate(50, 380)">
+    <rect width="800" height="75" rx="8" fill="#FFFFFF" stroke="#CBD5E0" stroke-width="1.5"/>
+    <rect x="0" y="0" width="8" height="75" rx="4" fill="#38A169"/>
+    <text x="30" y="26" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="bold" fill="#276749">4. On-Chip Flash Erase, Write &amp; Hash Verification</text>
+    <text x="30" y="46" font-family="Consolas, Monaco, monospace" font-size="11" fill="#2D3748">Erase Sectors ? Program partition.bin (0xE000/0xF000) ? Program Firmware (0x10000)</text>
+    <text x="30" y="64" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#2F855A">SHA-256 Calculated by Host == SHA-256 Calculated by Device  ?  [Verify success]  ?  [All Success]</text>
+  </g>
+
+  <!-- Line -->
+  <line x1="450" y1="455" x2="450" y2="475" stroke="#A0AEC0" stroke-width="2"/>
+
+  <!-- 5. Physical Execution -->
+  <g filter="url(#boxShadow)" transform="translate(50, 475)">
+    <rect width="800" height="95" rx="8" fill="#1A202C"/>
+    <rect x="0" y="0" width="8" height="95" rx="4" fill="#48BB78"/>
+    <text x="30" y="26" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="bold" fill="#48BB78">5. Physical Execution on BL602C40 Silicon</text>
+    <text x="30" y="46" font-family="Consolas, Monaco, monospace" font-size="11" fill="#E2E8F0">Hardware Reset ? Native bfl_main() ? FreeRTOS scheduler starts ? arduino_task dispatches</text>
+    <text x="30" y="65" font-family="Consolas, Monaco, monospace" font-size="11" fill="#68D391">Serial (COM7 @ 115200): "ARDUINO CLI BL602 BOOT OK" | "ARDUINO CLI ALIVE"</text>
+    <text x="30" y="83" font-family="Consolas, Monaco, monospace" font-size="11" fill="#68D391">GPIO1 Output: 3.3V (HIGH) / 0.0V (LOW) 500ms square wave toggled via FreeRTOS delay()</text>
+  </g>
+</svg>

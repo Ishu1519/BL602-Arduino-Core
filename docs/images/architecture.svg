@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 560" width="100%" height="100%">
+  <defs>
+    <linearGradient id="gradTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00979D"/>
+      <stop offset="100%" stop-color="#006468"/>
+    </linearGradient>
+    <linearGradient id="gradCore" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2D3748"/>
+      <stop offset="100%" stop-color="#1A202C"/>
+    </linearGradient>
+    <linearGradient id="gradSdk" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3182CE"/>
+      <stop offset="100%" stop-color="#2B6CB0"/>
+    </linearGradient>
+    <linearGradient id="gradHal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A5568"/>
+      <stop offset="100%" stop-color="#2D3748"/>
+    </linearGradient>
+    <linearGradient id="gradHw" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DD6B20"/>
+      <stop offset="100%" stop-color="#C05621"/>
+    </linearGradient>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="106%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="850" height="560" fill="#F7FAFC" rx="12"/>
+
+  <!-- Title -->
+  <text x="425" y="36" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="18" font-weight="bold" fill="#1A202C" text-anchor="middle">BL602 Arduino Core Layered Architecture</text>
+
+  <!-- 1. Sketch Layer -->
+  <g filter="url(#shadow)">
+    <rect x="50" y="55" width="750" height="55" rx="8" fill="url(#gradTop)"/>
+    <text x="425" y="80" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">User Application (Arduino Sketch)</text>
+    <text x="425" y="98" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#E6FFFA" text-anchor="middle">setup()  •  loop()  •  Standard Arduino Libraries</text>
+  </g>
+
+  <!-- Arrow -->
+  <path d="M 425 110 L 425 125" stroke="#718096" stroke-width="2"/>
+
+  <!-- 2. Arduino Core Layer -->
+  <g filter="url(#shadow)">
+    <rect x="50" y="125" width="750" height="75" rx="8" fill="url(#gradCore)"/>
+    <text x="425" y="148" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Arduino Compatibility Core</text>
+    <text x="425" y="168" font-family="Consolas, Monaco, monospace" font-size="11" fill="#E2E8F0" text-anchor="middle">Arduino.h  |  wiring_digital.c  |  wiring_time.c  |  HardwareSerial.cpp  |  Print.cpp  |  WString.cpp</text>
+    <text x="425" y="185" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#CBD5E0" text-anchor="middle">pinMode() • digitalWrite() • digitalRead() • delay() • millis() • Serial.print()</text>
+  </g>
+
+  <!-- Arrow -->
+  <path d="M 425 200 L 425 215" stroke="#718096" stroke-width="2"/>
+
+  <!-- 3. Application Task Hook -->
+  <g filter="url(#shadow)">
+    <rect x="150" y="215" width="550" height="48" rx="6" fill="#4C51BF"/>
+    <text x="425" y="236" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Application Entry &amp; FreeRTOS Task Dispatch</text>
+    <text x="425" y="252" font-family="Consolas, Monaco, monospace" font-size="11" fill="#EBF4FF" text-anchor="middle">extern "C" int main(void)  ?  xTaskCreate(arduino_task, stack: 2048, priority: 5)</text>
+  </g>
+
+  <!-- Arrow -->
+  <path d="M 425 263 L 425 278" stroke="#718096" stroke-width="2"/>
+
+  <!-- 4. Native Bouffalo SDK & FreeRTOS -->
+  <g filter="url(#shadow)">
+    <rect x="50" y="278" width="750" height="80" rx="8" fill="url(#gradSdk)"/>
+    <text x="425" y="300" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Native Bouffalo SDK &amp; FreeRTOS OS Layer</text>
+    <text x="425" y="322" font-family="Consolas, Monaco, monospace" font-size="11" fill="#EBF8FF" text-anchor="middle">start.S  ?  bfl_main()  ?  bl_sys_early_init()  ?  vPortDefineHeapRegions()  ?  vTaskStartScheduler()</text>
+    <text x="425" y="342" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#BEE3F8" text-anchor="middle">RISC-V Trap/IRQ Handlers  •  System Clocks (40MHz XTAL)  •  FreeRTOS Scheduler  •  VFS &amp; yloop</text>
+  </g>
+
+  <!-- Arrow -->
+  <path d="M 425 358 L 425 373" stroke="#718096" stroke-width="2"/>
+
+  <!-- 5. BL602 Hardware Drivers (HAL) -->
+  <g filter="url(#shadow)">
+    <rect x="50" y="373" width="750" height="70" rx="8" fill="url(#gradHal)"/>
+    <text x="425" y="395" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Bouffalo Standard Drivers &amp; Wireless Stacks</text>
+    <g transform="translate(70, 405)">
+      <rect x="0" y="0" width="160" height="26" rx="4" fill="#2D3748"/>
+      <text x="80" y="17" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#FFFFFF" text-anchor="middle">bl_gpio (GLB/GPIO)</text>
+      
+      <rect x="180" y="0" width="160" height="26" rx="4" fill="#2D3748"/>
+      <text x="260" y="17" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#FFFFFF" text-anchor="middle">bl_uart (115200 Baud)</text>
+      
+      <rect x="360" y="0" width="170" height="26" rx="4" fill="#2D3748"/>
+      <text x="445" y="17" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#FFFFFF" text-anchor="middle">bl602_wifi (802.11 b/g/n)</text>
+      
+      <rect x="550" y="0" width="160" height="26" rx="4" fill="#2D3748"/>
+      <text x="630" y="17" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#FFFFFF" text-anchor="middle">bl602_ble (BLE 5.0)</text>
+    </g>
+  </g>
+
+  <!-- Arrow -->
+  <path d="M 425 443 L 425 458" stroke="#718096" stroke-width="2"/>
+
+  <!-- 6. Physical Hardware -->
+  <g filter="url(#shadow)">
+    <rect x="50" y="458" width="750" height="75" rx="8" fill="url(#gradHw)"/>
+    <text x="425" y="482" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Physical Silicon: Bouffalo Lab BL602C40 / Ai-WB2-M1-I</text>
+    <text x="425" y="503" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#FEEBC8" text-anchor="middle">32-bit RISC-V RV32IMAFCP Core @ 192MHz  •  Single-Precision FPU  •  276KB SRAM  •  4MB (32Mbit) SPI Flash (c84016)</text>
+    <text x="425" y="521" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#FFFAF0" text-anchor="middle">UART0: TX=GPIO16, RX=GPIO7  •  Verified Test GPIO: GPIO1  •  2.4GHz RF Front-End</text>
+  </g>
+</svg>
