@@ -182,7 +182,7 @@ readdata: b'c8401680'
 
 Physical validation was performed on the **Ai-Thinker BL602C40 / Ai-WB2-M1-I** development board:
 
-![Hardware Setup]<img width="2607" height="1299" alt="IMG20260823230430 jpg" src="https://github.com/user-attachments/assets/14c31ff4-da55-4655-a7c4-2f7c50420070" />
+<img width="2607" height="1299" alt="IMG20260823230430 jpg" src="https://github.com/user-attachments/assets/14c31ff4-da55-4655-a7c4-2f7c50420070" />
 *Figure 2: Ai-Thinker BL602C40 (Ai-WB2-M1-I) module wired to USB-to-TTL UART adapter for physical validation.*
 
 ### Pin Connections
