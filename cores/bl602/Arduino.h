@@ -85,3 +85,7 @@ void loop(void);
 #endif
 
 #endif // Arduino_h
+
+#ifdef __cplusplus
+#include "HardwareSerial.h"
+#endif

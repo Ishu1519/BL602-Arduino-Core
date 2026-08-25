@@ -50,3 +50,11 @@ scratch/
 
 # Antigravity / AI tooling
 .gemini/
+
+!system/lib/*.a
+!system/lib/*.lib
+test_sketch/
+*.zip
+include_flags*.txt
+bl602-0.1.0-alpha.*/
+

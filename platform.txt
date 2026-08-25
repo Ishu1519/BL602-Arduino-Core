@@ -2,7 +2,7 @@
 # https://github.com/Ishu1519/BL602-Arduino-Core
 
 name=BL602 Arduino Core
-version=0.1.0
+version=0.1.0-alpha.2
 
 # ============================================================
 # IMPORTANT: Build System Note
@@ -16,21 +16,22 @@ version=0.1.0
 # ============================================================
 
 # RISC-V GCC Toolchain
-compiler.path={runtime.tools.riscv-none-embed-gcc.path}/bin/
-compiler.c.cmd=riscv-none-embed-gcc
-compiler.cpp.cmd=riscv-none-embed-g++
-compiler.ar.cmd=riscv-none-embed-ar
+compiler.path={runtime.tools.Xuantie-900-gcc.path}/bin/
+compiler.c.cmd=riscv64-unknown-elf-gcc
+compiler.cpp.cmd=riscv64-unknown-elf-g++
+compiler.ar.cmd=riscv64-unknown-elf-ar
 compiler.ar.flags=rcs
-compiler.c.elf.cmd=riscv-none-embed-gcc
-compiler.elf2hex.cmd=riscv-none-embed-objcopy
-compiler.size.cmd=riscv-none-embed-size
+compiler.c.elf.cmd=riscv64-unknown-elf-gcc
+compiler.elf2hex.cmd=riscv64-unknown-elf-objcopy
+compiler.size.cmd=riscv64-unknown-elf-size
 compiler.c.extra_flags=
 compiler.cpp.extra_flags=
 compiler.c.elf.extra_flags=
-compiler.c.elf.libs=-lm
+compiler.c.elf.libs=-L{runtime.platform.path}/system/lib -Wl,--start-group -lbl602 -lbl602_std -lfreertos_riscv_ram -lhosal -lvfs -lyloop -leasyflash4 -lblog -lromfs -lcli -lbloop -llooprt -lloopset -lcoredump -lblmtd -lblfdt -lbltime -lbl_os_adapter -lutils -lnewlibc -lwifi -lblecontroller_602_std -lrfparam_adapter_tmp -lm -Wl,--end-group -T{runtime.platform.path}/system/ld/flash_rom.ld
 
 # RISC-V Architecture Flags
-compiler.riscv.flags=-march=rv32imfc -mabi=ilp32f -DARCH_RISCV -DBL602 -DCFG_FREERTOS
+compiler.riscv.flags=-march=rv32imafc -mabi=ilp32f -DARCH_RISCV -DBL602 -DCFG_FREERTOS -I{runtime.platform.path}/system/include/encoder_decoder/unxz/linux/include/linux -I{runtime.platform.path}/system/include/encoder_decoder/unxz/linux/include/linux/decompress -I{runtime.platform.path}/system/include/encoder_decoder/unxz/linux/lib/xz -I{runtime.platform.path}/system/include/encoder_decoder/unxz/userspace -I{runtime.platform.path}/system/include/os/bl_os_adapter/bl_os_adapter -I{runtime.platform.path}/system/include/os/bl_os_adapter/bl_os_adapter/include/bl_os_adapter -I{runtime.platform.path}/system/include/platform/hosal/adapter -I{runtime.platform.path}/system/include/platform/hosal/bl602_hal -I{runtime.platform.path}/system/include/platform/hosal/bl702_hal -I{runtime.platform.path}/system/include/platform/hosal/bl808_e907_hal -I{runtime.platform.path}/system/include/platform/hosal/bl808_hal -I{runtime.platform.path}/system/include/platform/hosal/include -I{runtime.platform.path}/system/include/platform/hosal/platform_hal -I{runtime.platform.path}/system/include/platform/hosal/sec_common -I{runtime.platform.path}/system/include/platform/soc/bl602/bl602/evb/src -I{runtime.platform.path}/system/include/platform/soc/bl602/bl602/evb/src/boot/gcc -I{runtime.platform.path}/system/include/platform/soc/bl602/bl602_std/bl602_std/Common/cipher_suite/inc -I{runtime.platform.path}/system/include/platform/soc/bl602/bl602_std/bl602_std/Common/partition -I{runtime.platform.path}/system/include/platform/soc/bl602/bl602_std/bl602_std/Common/platform_print -I{runtime.platform.path}/system/include/platform/soc/bl602/bl602_std/bl602_std/Common/ring_buffer -I{runtime.platform.path}/system/include/platform/soc/bl602/bl602_std/bl602_std/Common/sim_print -I{runtime.platform.path}/system/include/platform/soc/bl602/bl602_std/bl602_std/Common/soft_crc -I{runtime.platform.path}/system/include/platform/soc/bl602/bl602_std/bl602_std/Common/xz -I{runtime.platform.path}/system/include/platform/soc/bl602/bl602_std/bl602_std/Device/Bouffalo/BL602/Peripherals -I{runtime.platform.path}/system/include/platform/soc/bl602/bl602_std/bl602_std/RISCV/Core/Include -I{runtime.platform.path}/system/include/platform/soc/bl602/bl602_std/bl602_std/RISCV/Device/Bouffalo/BL602/Startup -I{runtime.platform.path}/system/include/platform/soc/bl602/bl602_std/bl602_std/StdDriver/Inc -I{runtime.platform.path}/system/include/platform/soc/bl602/freertos_riscv -I{runtime.platform.path}/system/include/platform/soc/bl602/freertos_riscv/config -I{runtime.platform.path}/system/include/platform/soc/bl602/freertos_riscv/portable/GCC/RISC-V -I{runtime.platform.path}/system/include/platform/soc/bl602/freertos_riscv/portable/GCC/RISC-V/chip_specific_extensions/Pulpino_Vega_RV32M1RM -I{runtime.platform.path}/system/include/platform/soc/bl602/freertos_riscv/portable/GCC/RISC-V/chip_specific_extensions/RV32I_CLINT_no_extensions -I{runtime.platform.path}/system/include/platform/soc/bl602/freertos_riscv_ram/config -I{runtime.platform.path}/system/include/platform/soc/bl602/freertos_riscv_ram/misaligned -I{runtime.platform.path}/system/include/platform/soc/bl602/freertos_riscv_ram/panic -I{runtime.platform.path}/system/include/platform/soc/bl602/freertos_riscv_ram/portable/GCC/RISC-V -I{runtime.platform.path}/system/include/platform/soc/bl602/freertos_riscv_ram/portable/GCC/RISC-V/chip_specific_extensions/Pulpino_Vega_RV32M1RM -I{runtime.platform.path}/system/include/platform/soc/bl602/freertos_riscv_ram/portable/GCC/RISC-V/chip_specific_extensions/RV32F_float_abi_single -I{runtime.platform.path}/system/include/platform/soc/bl602/freertos_riscv_ram/portable/GCC/RISC-V/chip_specific_extensions/RV32I_CLINT_no_extensions -I{runtime.platform.path}/system/include/platform/soc/bl606p/bl606p_phyrf -I{runtime.platform.path}/system/include/sys/blmtd/include -I{runtime.platform.path}/system/include/sys/bloop/bloop/include -I{runtime.platform.path}/system/include/sys/bloop/loopapps/loopalarm/include -I{runtime.platform.path}/system/include/sys/bloop/looprt/include -I{runtime.platform.path}/system/include/sys/bloop/loopset/include -I{runtime.platform.path}/system/include/sys/blota/include -I{runtime.platform.path}/system/include/sys/bltime/include -I{runtime.platform.path}/system/include/sys/bugkiller_freertos/include -I{runtime.platform.path}/system/include/xram/bl808_net/include -I{runtime.platform.path}/system/include/xram/bl808_ring/include -I{runtime.platform.path}/system/include/xram/bl808_xram/include
+
 compiler.warning_flags=-Wall
 compiler.warning_flags.none=-w
 compiler.warning_flags.default=
@@ -39,18 +40,18 @@ compiler.warning_flags.all=-Wall -Wextra
 
 # Compile C
 compiler.c.flags=-c -g -Os {compiler.warning_flags} -std=gnu99 -ffunction-sections -fdata-sections {compiler.riscv.flags}
-recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags}  {includes} "{source_file}" -o "{object_file}"
 
 # Compile C++
 compiler.cpp.flags=-c -g -Os {compiler.warning_flags} -std=gnu++11 -fno-rtti -fno-exceptions -ffunction-sections -fdata-sections {compiler.riscv.flags}
-recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags}  {includes} "{source_file}" -o "{object_file}"
 
 # Archive
 recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} "{archive_file_path}" "{object_file}"
 
 # Link
-compiler.c.elf.flags=-Os -g -Wl,--gc-sections -march=rv32imfc -mabi=ilp32f -nostartfiles
-recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} -o "{build.path}/{build.project_name}.elf" {object_files} "{build.path}/{archive_file}" -Wl,--start-group {compiler.c.elf.libs} -Wl,--end-group
+compiler.c.elf.flags=-Os -g -Wl,--gc-sections -march=rv32imafc -mabi=ilp32f -nostartfiles
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} -o "{build.path}/{build.project_name}.elf" {object_files} -Wl,--start-group "{build.path}/{archive_file}" {compiler.c.elf.libs} -Wl,--end-group
 
 # Binary
 recipe.objcopy.bin.pattern="{compiler.path}{compiler.elf2hex.cmd}" -O binary "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
@@ -66,3 +67,18 @@ tools.bflb_iot_tool.path={runtime.tools.bflb_iot_tool.path}
 tools.bflb_iot_tool.upload.params.verbose=--verbose
 tools.bflb_iot_tool.upload.params.quiet=
 tools.bflb_iot_tool.upload.pattern="{path}/{cmd}" --chipname=bl602 --interface=uart --port={serial.port} --baudrate={upload.speed} --firmware="{build.path}/{build.project_name}.bin"
+
+
+
+
+recipe.S.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -x assembler-with-cpp -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {includes} -c "{source_file}" -o "{object_file}"
+build.extra_flags=
+compiler.c.extra_flags=
+compiler.cpp.extra_flags=
+
+
+
+
+
+
+
