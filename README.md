@@ -6,7 +6,8 @@
 
 ## Hardware Used
 
-![BL602C40 / Ai-Thinker Ai-WB2 module used for development and hardware validation.](docs/images/bl602_module.png)
+![BL602C40 / Ai-Thinker Ai-WB2 module used for development and hardware validation.](docs/images/bl602_module.png)<img width="716" height="865" alt="WhatsApp Image 2026-08-05 at 1 21 22 AM" src="https://github.com/user-attachments/assets/52cf9084-4f74-4751-8744-0ee2d86ee009" />
+
 
 | | |
 |---|---|
@@ -16,6 +17,11 @@
 | **Wireless** | 2.4 GHz WiFi + Bluetooth LE |
 | **Memory** | 276 KB SRAM, 2 MB Flash |
 | **Crystal** | 40 MHz |
+
+<img width="2607" height="1299" alt="IMG20260823230430 jpg" src="https://github.com/user-attachments/assets/45aca863-62e7-40f4-add7-691a6ef350b1" />
+
+| **Reference size** | Front and back view |
+
 
 ---
 
