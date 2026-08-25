@@ -1,0 +1,35 @@
+{
+  "packages": [
+    {
+      "name": "BL602",
+      "maintainer": "Ishu1519",
+      "websiteURL": "https://github.com/Ishu1519/BL602-Arduino-Core",
+      "email": "Ishu1519@users.noreply.github.com",
+      "help": {
+        "online": "https://github.com/Ishu1519/BL602-Arduino-Core/issues"
+      },
+      "platforms": [
+        {
+          "name": "BL602 Boards",
+          "architecture": "bl602",
+          "version": "0.1.0-alpha.1",
+          "category": "Contributed",
+          "help": {
+            "online": "https://github.com/Ishu1519/BL602-Arduino-Core/issues"
+          },
+          "url": "https://github.com/Ishu1519/BL602-Arduino-Core/releases/download/v0.1.0-alpha.1/bl602-0.1.0-alpha.1-rev2.zip",
+          "archiveFileName": "bl602-0.1.0-alpha.1-rev2.zip",
+          "checksum": "SHA-256:F9748B72A31A3F4E45A1E29C7F069410754FDCD8372CD64710F85A553E7E2466",
+          "size": "11463",
+          "boards": [
+            {
+              "name": "Ai-Thinker Ai-WB2 / BL602C40"
+            }
+          ],
+          "toolsDependencies": []
+        }
+      ],
+      "tools": []
+    }
+  ]
+}

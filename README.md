@@ -1,63 +1,296 @@
 # BL602 Arduino Core
 
-Arduino core for **Bouffalo Lab BL602** — a RISC-V (RV32IMFC) MCU with integrated Wi-Fi and Bluetooth LE.
+> A hardware-tested Arduino-style runtime for the Bouffalo Lab BL602, built on top of the native Bouffalo SDK.
 
-This core provides a familiar Arduino programming interface for the BL602, built on top of the Bouffalo SDK with FreeRTOS.
+---
 
-> **Version 0.1.0** — Early release. Core GPIO, Serial, and WiFi functionality have been physically tested on real hardware. See the feature matrix below for details.
+## Hardware Used
 
-## Features
+![BL602C40 / Ai-Thinker Ai-WB2 module used for development and hardware validation.](docs/images/bl602_module.png)
 
-| Feature | Status | Notes |
-|---------|--------|-------|
-| Arduino `setup()` / `loop()` | ✅ Tested | Runs in FreeRTOS task |
-| `Serial` @ 115200 baud | ✅ Tested | UART0: GPIO16 TX, GPIO7 RX |
-| `pinMode` / `digitalWrite` / `digitalRead` | ✅ Tested | Selected pins physically tested |
-| `delay()` / `millis()` / `micros()` | ✅ Tested | FreeRTOS tick-based |
-| `yield()` | ✅ Tested | FreeRTOS `taskYIELD()` |
-| `Print` / `println` | ✅ Tested | Full Print class |
-| `String` (WString) | ✅ Tested | Basic String operations |
-| Native SDK WiFi (AP/HTTP) | ✅ Tested | Physically tested via native SDK |
-| Arduino WiFi API | ❌ Not verified | Moved to experimental/ |
-| I2C / Wire | ⚠️ Experimental | Implemented, not physically verified |
-| Native BLE Advertising | ✅ Tested | Physically tested separately |
-| Arduino BLE API | ❌ Not supported | Unsupported/Experimental |
-| WiFi + BLE Coexistence | ❌ Unverified | Not proven |
-| Analog I/O / PWM | ❌ Not implemented | |
-| SPI | ❌ Not implemented | |
-| Arduino IDE Compile | ❌ Unverified | Requires SDK build system |
+| | |
+|---|---|
+| **Target chip** | Bouffalo Lab BL602C40 |
+| **Module** | Ai-Thinker Ai-WB2 style module |
+| **Architecture** | RISC-V RV32IMFC — single-core, 160 MHz, hardware FPU |
+| **Wireless** | 2.4 GHz WiFi + Bluetooth LE |
+| **Memory** | 276 KB SRAM, 2 MB Flash |
+| **Crystal** | 40 MHz |
 
-## Supported Boards
+---
 
-- **Bouffalo Lab BL602** — RISC-V RV32IMFC, 160 MHz, 276 KB SRAM, 2 MB Flash
-  - Ai-Thinker Ai-WB2 modules
-  - Pine64 PineCone
-  - DT-BL10
-  - Any BL602-based board with UART0 access
+## Why this project exists
 
-## Installation
+I could get the BL602 working reliably with the native Bouffalo SDK, but that workflow was not the development experience I wanted. So I built the Arduino-style layer I wanted to use.
 
-### Option A: Manual Installation from GitHub
+This project grew out of roughly 20+ days of hands-on experimentation — building the native SDK environment, debugging UART framing, integrating an Arduino runtime, testing GPIO, bringing up native WiFi, investigating BLE, isolating coexistence problems, repeatedly flashing real hardware, and documenting which pieces actually work and which do not.
 
-```bash
-git clone https://github.com/Ishu1519/BL602-Arduino-Core.git
+### The short version
+
+I was already using low-cost ESP32-class hardware for compact embedded projects. The ESP32-C3 is especially attractive in this price range — it is cheap, single-core RISC-V, has WiFi and BLE, and has a mature ecosystem around Arduino and ESP-IDF.
+
+But I kept running into a limitation for some of my projects: **the ESP32-C3 does not have hardware floating-point support.**
+
+That made me interested in finding a cheap MCU with a similar feature set but with an FPU. I eventually came across a very inexpensive module that initially looked like another small WiFi/Bluetooth MCU. When I actually received it, I discovered it was a **Bouffalo Lab BL602C40**.
+
+The BL602 combines:
+
+- Single-core RISC-V with **hardware floating-point**
+- 2.4 GHz WiFi
+- Bluetooth LE
+- Very low-cost hardware
+
+For some of my compact embedded projects, that combination is better suited than the ESP32-C3 — not universally better, but better for the specific cases where I need an FPU, wireless, and a low bill of materials.
+
+### Hardware was not the difficult part. The software ecosystem was.
+
+The BL602 ecosystem is emerging and community-driven. There is real prior work — PINE64's Arduino efforts, community PlatformIO integrations, alternative SDK and toolchain approaches, and the native Bouffalo SDK itself. I tried the existing approaches available to me, but I could not get a reliable end-to-end workflow running on my actual BL602C40 hardware.
+
+To be clear: I am not saying those projects do not work for anyone. They did not give me a reliable workflow on my hardware and setup.
+
+What consistently worked was:
+
+- **Ubuntu / WSL** as the build environment
+- **Bouffalo Lab native SDK** with FreeRTOS
+- **Bouffalo Lab DevCube 1.9.0** for flashing
+
+That environment could produce real working firmware on my BL602C40 board. But the native SDK workflow was much less convenient than Arduino or PlatformIO. I wanted the Arduino `setup()` / `loop()` programming model without throwing away the native Bouffalo runtime that was actually working on my hardware.
+
+So I built one.
+
+---
+
+## Architecture
+
+The core idea: keep the native Bouffalo environment underneath. Do not replace the native WiFi/BLE stack with fake Arduino wrappers. Instead, run the Arduino programming model as a FreeRTOS task on top of the native runtime.
+
+```
+┌─────────────────────────────┐
+│      Your Arduino Sketch    │
+│      setup()  /  loop()     │
+├─────────────────────────────┤
+│    Arduino Runtime Layer    │
+│  Serial, GPIO, Print, Time  │
+├─────────────────────────────┤
+│     FreeRTOS Task System    │
+├─────────────────────────────┤
+│   Native Bouffalo Lab SDK   │
+│   WiFi · BLE · HAL · LWIP  │
+└─────────────────────────────┘
 ```
 
-See [docs/building-from-source.md](docs/building-from-source.md) for build instructions using the Bouffalo SDK.
+This is why the project is an **Arduino-style runtime/core** rather than a project that pretends every Arduino peripheral API is already complete. The native SDK does the heavy lifting for WiFi and BLE. The Arduino layer gives you `setup()`, `loop()`, `Serial`, `digitalWrite`, `delay`, and the programming model you already know.
 
-### Option B: Arduino IDE Boards Manager (Future)
+---
 
-> **Note**: Boards Manager packaging prepared; first release package pending.
+## The 2-Mbaud UART Trap
 
-When available, add this URL to **File → Preferences → Additional Boards Manager URLs**:
+> **If you are working with a BL602 and getting garbage on your serial terminal, read this section first.**
+
+The native BL602 SDK initializes the console UART at approximately **2,000,000 baud**. Most common USB-TTL adapters either cannot sustain that rate reliably or produce framing errors at that speed.
+
+On my setup, the serial output was unreadable at 2 Mbaud. After considerable debugging, the fix was straightforward:
+
+```c
+bl_uart_init(0, 16, 7, 255, 255, 115200);
+```
+
+This reconfigures UART0 as:
+
+| Parameter | Value |
+|---|---|
+| UART ID | 0 |
+| TX | GPIO16 |
+| RX | GPIO7 |
+| Baud rate | **115200** |
+
+After applying this:
+
+- Serial output became readable
+- The native WiFi stack continued working normally
+- Arduino runtime `Serial.println()` output became readable
+
+This was discovered through physical hardware debugging — not theoretical analysis. If you are bringing up a BL602 board and your serial monitor shows garbage, **check the baud rate first**.
+
+![Actual USB-TTL development setup. UART0 uses GPIO16 (TX) and GPIO7 (RX), with the runtime configured for 115200 baud.](docs/images/uart_setup.jpg)
+
+---
+
+## Feature Status
+
+> **"Implemented" does not mean "physically verified."** This project makes an explicit distinction between code that exists and code that has been tested on real hardware.
+
+| Label | Meaning |
+|---|---|
+| ✅ Physically verified | Tested on real BL602 hardware, serial output observed |
+| ⚠️ Experimental | Code exists, not yet physically validated |
+| ❌ Not implemented | No code or no verification path |
+
+### Current status
+
+| Feature | Status | Evidence |
+|---|---|---|
+| Arduino `setup()` / `loop()` | ✅ Physically verified | FreeRTOS task on real BL602 |
+| `Serial` @ 115200 | ✅ Physically verified | UART0 on GPIO16/7 |
+| GPIO digital I/O | ✅ Physically verified | Selected pins |
+| `delay()` / `millis()` / `micros()` | ✅ Physically verified | Real firmware timing |
+| `Print` / `String` | ✅ Physically verified | Real serial output |
+| Native SDK WiFi AP + HTTP | ✅ Physically verified | Real BL602 AP with HTTP server |
+| Native BLE advertising | ✅ Physically verified | Detected by nRF Connect |
+| Wire / I2C | ⚠️ Experimental | Implemented, not physically verified |
+| Arduino WiFi API | ⚠️ Experimental / Unverified | Not part of the stable path |
+| Arduino BLE API | ❌ Not supported | Native BLE only |
+| WiFi + BLE coexistence | ⚠️ Unverified | Combined runtime not proven |
+| Arduino IDE direct compile/upload | ❌ Unverified | Native SDK build currently required |
+| SPI | ❌ Not implemented / verified | |
+| ADC / PWM | ❌ Not implemented | |
+| BL604 hardware | ⚠️ Not physically verified | BL602 is the primary target |
+
+---
+
+## Hardware Verification
+
+### WiFi
+
+The native Bouffalo WiFi stack runs as a background FreeRTOS task alongside the Arduino runtime. The firmware creates a WiFi access point (`BL602-Arduino`) and serves HTTP responses — all while the Arduino `loop()` continues printing `ARDUINO ALIVE` to serial.
+
+The serial monitor below shows real WiFi stack traffic interleaved with the Arduino runtime output at 115200 baud:
+
+![Native BL602 WiFi runtime producing real stack traffic on hardware at 115200 baud.](docs/images/wifi_serial_output.png)
+
+### BLE
+
+Native BLE advertising was tested separately using the Bouffalo SDK BLE stack. The device advertises as `BL602-SDK-BLE` and was detected and connected to using nRF Connect on a real phone.
+
+![Native BL602 BLE advertisement detected by nRF Connect on real hardware.](docs/images/ble_nrf_connect.jpg)
+
+> **Note:** WiFi and BLE have each been proven to work independently. Combined WiFi + BLE coexistence has not been validated in a single firmware image.
+
+---
+
+## Development Workflow
+
+### Flashing
+
+The verified flashing tool is **Bouffalo Lab DevCube 1.9.0**. The screenshot below shows a successful flash to the BL602 over UART (COM7, 40 MHz crystal, chip erase enabled, 100% progress, `[All Success]`):
+
+![Bouffalo Lab DevCube 1.9.0 successfully flashing the BL602 firmware.](docs/images/devcube_flash.png)
+
+### Getting Started (verified workflow)
+
+The current known-good workflow is:
+
+1. **Build environment:** Ubuntu or WSL
+2. **SDK:** Clone and set up the Bouffalo Lab native SDK
+3. **Build:** Compile using the native SDK build system (`make`)
+4. **Flash:** Use Bouffalo Lab DevCube 1.9.0 over UART
+5. **Monitor:** Open a serial terminal at **115200 baud** on the UART0 pins (GPIO16 TX, GPIO7 RX)
+
+> **Important:** Arduino IDE Boards Manager installation has not been validated end-to-end. The `boards.txt`, `platform.txt`, and `package_bl602_index.json` files exist in this repository as scaffolding for future Arduino IDE integration, but the verified path today is the native SDK build.
+
+See [docs/building-from-source.md](docs/building-from-source.md) for detailed build instructions.
+
+### Pin Mapping
+
+Pin numbers map directly to BL602 GPIO numbers — no remapping.
+
+| Function | GPIO | Notes |
+|---|---|---|
+| Serial TX | 16 | UART0 |
+| Serial RX | 7 | UART0 |
+| LED_BUILTIN | 1 | Board-dependent |
+| I2C SDA | 4 | Experimental / unverified |
+| I2C SCL | 3 | Experimental / unverified |
+
+---
+
+## Why BL602 instead of ESP32-C3?
+
+This is not a performance benchmark. It is a summary of why the BL602 was more interesting to me for certain projects.
+
+| | ESP32-C3 | BL602 |
+|---|---|---|
+| Architecture | Single-core RISC-V | Single-core RISC-V |
+| Hardware FPU | **No** | **Yes** |
+| WiFi | Yes | Yes |
+| BLE | Yes | Yes |
+| Ecosystem | Mature (Arduino, ESP-IDF) | Emerging / Community-driven |
+| My reason for interest | Mature, easy workflow | Low cost + FPU + wireless |
+
+The ESP32-C3 remains the safer, easier choice for most projects. The BL602 is interesting when you specifically need hardware floating-point at a very low price point and are willing to work with a less mature toolchain.
+
+---
+
+## Prior Art
+
+I am not claiming to be the first person to bring Arduino concepts to the BL602. Notable prior and related work includes:
+
+- [**PINE64 ArduinoCore-bouffalo**](https://github.com/pine64/ArduinoCore-bouffalo) — PINE64's Arduino core effort for BL602/BL706
+- **Community PlatformIO integrations** for Bouffalo chips
+- **Bouffalo Lab native SDK** — the foundation this project builds on
+- Various community BL602 Arduino and toolchain experiments
+
+I built this project because I needed a workflow that actually worked on my hardware. The existing approaches did not give me a reliable end-to-end path on my specific BL602C40 module, so I started from the native SDK — which did work — and built the Arduino layer on top.
+
+---
+
+## Known Limitations
+
+- **Arduino IDE direct compile/upload** is not yet validated — native SDK build is required
+- **Arduino WiFi API** is experimental and not stable — use native SDK WiFi calls instead
+- **Arduino BLE API** is not supported — BLE works only through the native SDK
+- **WiFi + BLE coexistence** has not been verified in a combined firmware
+- **Wire / I2C** is implemented but not physically tested on hardware
+- **SPI** is not implemented or verified
+- **ADC / PWM** are not implemented
+- **BL604** hardware has not been physically validated (BL602 is the tested target)
+
+---
+
+## Roadmap
+
+No dates promised. Ordered by priority:
+
+1. Arduino IDE build and package support (Boards Manager integration)
+2. Physical Wire / I2C validation on real hardware
+3. Arduino WiFi API stabilization
+4. Arduino BLE API
+5. WiFi + BLE coexistence testing
+6. Broader board and variant testing
+7. BL604 hardware validation
+8. PlatformIO support
+
+---
+
+## Repository Structure
 
 ```
-https://raw.githubusercontent.com/Ishu1519/BL602-Arduino-Core/main/package_bl602_index.json
+BL602-Arduino-Core/
+├── cores/bl602/           # Arduino core implementation
+│   ├── Arduino.h          # Main Arduino header
+│   ├── main.c             # FreeRTOS entry + Arduino task
+│   ├── wiring_digital.c   # pinMode, digitalWrite, digitalRead
+│   ├── wiring_time.c      # delay, millis, micros, yield
+│   ├── HardwareSerial.*   # UART serial (115200 on GPIO16/7)
+│   ├── Print.*             # Print class
+│   ├── WString.*           # String class
+│   └── ...
+├── libraries/
+│   ├── WiFi/              # Arduino WiFi API (experimental)
+│   ├── Wire/              # I2C (experimental)
+│   └── SPI/               # SPI (not verified)
+├── variants/bl602c40/     # Board-specific pin definitions
+├── examples/              # Example sketches
+├── experimental/          # Experimental / unverified code
+├── docs/                  # Documentation and images
+├── boards.txt             # Arduino board definitions
+├── platform.txt           # Arduino platform configuration
+└── package_bl602_index.json  # Boards Manager index (future)
 ```
 
-Then search for **BL602** in Boards Manager.
+---
 
-## First Example
+## Example
 
 ```cpp
 #include <Arduino.h>
@@ -74,140 +307,20 @@ void loop() {
     delay(500);
     digitalWrite(LED_BUILTIN, LOW);
     delay(500);
-    Serial.println("BL602 alive");
+    Serial.println("ARDUINO ALIVE");
 }
 ```
 
-## Pin Mapping
-
-Pin numbers map directly to BL602 GPIO numbers. There is no remapping.
-
-| Function | GPIO | Notes |
-|----------|------|-------|
-| Serial TX | GPIO16 | UART0 |
-| Serial RX | GPIO7 | UART0 |
-| LED_BUILTIN | GPIO1 | Board-dependent |
-| I2C SDA | GPIO4 | Experimental |
-| I2C SCL | GPIO3 | Experimental |
-| BOOT | GPIO8 | Hold HIGH for bootloader |
-
-See [docs/pin-mapping.md](docs/pin-mapping.md) for the full pin table.
-
-## Serial
-
-This core initializes UART0 at **115200 baud** on startup:
-
-```c
-bl_uart_init(0, 16, 7, 255, 255, 115200);
-```
-
-**Important**: The BL602 SDK default console uses 2,000,000 baud, which most USB-TTL adapters cannot reliably decode. This Arduino core explicitly overrides UART0 to 115200 baud so standard serial terminals work correctly.
-
-Connect your USB-TTL adapter:
-- **GPIO16** → RX on adapter
-- **GPIO7** → TX on adapter
-- **GND** → GND
-
-## GPIO
-
-```cpp
-pinMode(5, OUTPUT);
-digitalWrite(5, HIGH);
-
-pinMode(4, INPUT_PULLUP);
-int val = digitalRead(4);
-```
-
-Supported modes: `INPUT`, `OUTPUT`, `INPUT_PULLUP`, `INPUT_PULLDOWN`.
-
-## WiFi
-
-WiFi has been physically verified in Access Point mode. The BL602 creates a WiFi network and serves HTTP responses at 192.168.4.1.
-
-WiFi requires the full SDK build system — it is not available through the Arduino IDE compile button. See [docs/building-from-source.md](docs/building-from-source.md).
-
-## BLE (Experimental)
-
-Native BLE advertising has been physically verified on BL602 using the Bouffalo BLE stack. The device was detected by nRF Connect.
-
-**What works:**
-- BLE advertisement using native SDK APIs
-- Device visible on BLE scanners
-
-**What is NOT validated:**
-- Arduino BLE API (not implemented)
-- WiFi + BLE simultaneous operation (experimental)
-- GATT services / characteristics
-
-See `examples/05.BLE/NativeBLEAdvertise/` for details.
-
-## Building from Source
-
-This core requires the Bouffalo BL602 SDK build system:
-
-```bash
-# Clone the SDK
-git clone https://github.com/bouffalolab/bl_iot_sdk.git ~/OpenBL602
-
-# Create your project under customer_app/
-cd ~/OpenBL602/customer_app/my_project
-
-# Build
-make CONFIG_CHIP_NAME=BL602 -j$(nproc)
-```
-
-See [docs/building-from-source.md](docs/building-from-source.md) for complete instructions.
-
-## Uploading Firmware
-
-1. Put BL602 in bootloader mode (hold GPIO8/BOOT HIGH, press RESET, release BOOT)
-2. Flash:
-   ```bash
-   bflb_iot_tool --chipname=bl602 --interface=uart \
-       --port=/dev/ttyUSB0 --baudrate=115200 \
-       --firmware=build_out/bl602_demo_wifi.bin
-   ```
-3. Press RESET to run the firmware
-
-## Known Limitations
-
-- **No Arduino IDE compilation yet** — The core/runtime implementation is working and Arduino-style APIs are implemented, but the current project build still relies on the Bouffalo SDK. Arduino IDE direct compile/upload has NOT yet been physically validated.
-- **No analog I/O** — `analogRead()` and `analogWrite()` are not implemented.
-- **No SPI** — SPI library is not implemented.
-- **Wire/I2C is untested** — The library compiles but has not been verified on hardware.
-- **BLE is experimental** — Only native SDK BLE advertising has been tested. No Arduino BLE API.
-- **Single-threaded Arduino** — `setup()`/`loop()` run in one FreeRTOS task. WiFi and BLE run in separate SDK tasks.
-
-## Troubleshooting
-
-See [docs/troubleshooting.md](docs/troubleshooting.md) for common issues and solutions.
-
-## Contributing
-
-Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-Areas where help is especially needed:
-- Arduino IDE compilation support
-- Analog I/O and PWM implementation
-- SPI library
-- I2C/Wire physical verification
-- Additional board variants
+---
 
 ## License
 
-This project is licensed under the **MIT License** — see [LICENSE](LICENSE).
+MIT License. See [LICENSE](LICENSE).
 
-## Third-Party Notices
+---
 
-This project uses components from:
-- **Bouffalo Lab BL602 SDK** (Apache 2.0 / BSD-3-Clause)
-- **FreeRTOS** (MIT)
-- **lwIP** (BSD-3-Clause)
+## Contributing
 
-See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for full details.
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Credits
-
-- [Bouffalo Lab](https://www.bouffalolab.com/) for the BL602 SDK
-- [Arduino](https://www.arduino.cc/) for the Arduino platform specification
-- The open-source BL602 community
+Issues and pull requests are welcome — especially hardware test reports from other BL602 boards and modules.
