@@ -55,7 +55,7 @@
                                            {
                                                "url":  "https://github.com/Ishu1519/BL602-Arduino-Core/releases/download/v0.1.0-alpha.2/bl602-0.1.0-alpha.2.zip",
                                                "architecture":  "bl602",
-                                               "size":  "18441506",
+                                               "size":  "18472210",
                                                "version":  "0.1.0-alpha.2",
                                                "category":  "Contributed",
                                                "name":  "BL602 Boards",
@@ -75,7 +75,7 @@
                                                                              "packager":  "BL602"
                                                                          }
                                                                      ],
-                                               "checksum":  "SHA-256:362A9CCC23553785469479563D49D1985C9FE13DAC06B76638499376DE8C8617"
+                                               "checksum":  "SHA-256:5B00A3DFFBE0BC5FE7434A06D83AC699867C44142A43EA446A9D7E7B0F657174"
                                            }
                                        ]
                      }
