@@ -1,83 +1,83 @@
 {
-  "packages": [
-    {
-      "name": "BL602",
-      "maintainer": "Ishu1519",
-      "websiteURL": "https://github.com/Ishu1519/BL602-Arduino-Core",
-      "email": "Ishu1519@users.noreply.github.com",
-      "help": {
-        "online": "https://github.com/Ishu1519/BL602-Arduino-Core/issues"
-      },
-      "platforms": [
-        {
-          "name": "BL602 Boards",
-          "architecture": "bl602",
-          "version": "0.1.0-alpha.2",
-          "category": "Contributed",
-          "help": {
-            "online": "https://github.com/Ishu1519/BL602-Arduino-Core/issues"
-          },
-          "url": "https://github.com/Ishu1519/BL602-Arduino-Core/releases/download/v0.1.0-alpha.2/bl602-0.1.0-alpha.2.zip",
-          "archiveFileName": "bl602-0.1.0-alpha.2.zip",
-          "checksum": "SHA-256:362A9CCC23553785469479563D49D1985C9FE13DAC06B76638499376DE8C8617",
-          "size": "18441506",
-          "boards": [
-            {
-              "name": "Bouffalo Lab BL602"
-            }
-          ],
-          "toolsDependencies": [
-            {
-              "packager": "BL602",
-              "name": "Xuantie-900-gcc",
-              "version": "2.6.1"
-            }
-          ]
-        }
-      ],
-      "tools": [
-        {
-          "name": "Xuantie-900-gcc",
-          "version": "2.6.1",
-          "systems": [
-            {
-              "host": "i686-mingw32",
-              "url": "https://github.com/bouffalolab/arduino-bouffalo/releases/download/1.0.5/Xuantie-900-gcc_2.6.1.zip",
-              "archiveFileName": "Xuantie-900-gcc_2.6.1.zip",
-              "checksum": "SHA-256:362A9CCC23553785469479563D49D1985C9FE13DAC06B76638499376DE8C8617",
-              "size": "18441506"
-            },
-            {
-              "host": "x86_64-pc-linux-gnu",
-              "url": "https://github.com/bouffalolab/arduino-bouffalo/releases/download/1.0.5/Xuantie-900-gcc-linux64_2.6.1.zip",
-              "archiveFileName": "Xuantie-900-gcc-linux64_2.6.1.zip",
-              "checksum": "SHA-256:362A9CCC23553785469479563D49D1985C9FE13DAC06B76638499376DE8C8617",
-              "size": "18441506"
-            },
-            {
-              "host": "i686-pc-linux-gnu",
-              "url": "https://github.com/bouffalolab/arduino-bouffalo/releases/download/1.0.5/Xuantie-900-gcc-linux64_2.6.1.zip",
-              "archiveFileName": "Xuantie-900-gcc-linux64_2.6.1.zip",
-              "checksum": "SHA-256:362A9CCC23553785469479563D49D1985C9FE13DAC06B76638499376DE8C8617",
-              "size": "18441506"
-            },
-            {
-              "host": "x86_64-apple-darwin",
-              "url": "https://github.com/bouffalolab/arduino-bouffalo/releases/download/1.0.5/xuantie-900-gcc-macos.tar.gz",
-              "archiveFileName": "xuantie-900-gcc-macos.tar.gz",
-              "checksum": "SHA-256:362A9CCC23553785469479563D49D1985C9FE13DAC06B76638499376DE8C8617",
-              "size": "18441506"
-            },
-            {
-              "host": "arm64-apple-darwin",
-              "url": "https://github.com/bouffalolab/arduino-bouffalo/releases/download/1.0.5/xuantie-900-gcc-macos-arm64.tar.gz",
-              "archiveFileName": "xuantie-900-gcc-macos-arm64.tar.gz",
-              "checksum": "SHA-256:362A9CCC23553785469479563D49D1985C9FE13DAC06B76638499376DE8C8617",
-              "size": "18441506"
-            }
-          ]
-        }
-      ]
-    }
-  ]
+    "packages":  [
+                     {
+                         "email":  "Ishu1519@users.noreply.github.com",
+                         "name":  "BL602",
+                         "tools":  [
+                                       {
+                                           "systems":  [
+                                                           {
+                                                               "archiveFileName":  "Xuantie-900-gcc_2.6.1.zip",
+                                                               "host":  "i686-mingw32",
+                                                               "url":  "https://github.com/bouffalolab/arduino-bouffalo/releases/download/1.0.5/Xuantie-900-gcc_2.6.1.zip",
+                                                               "checksum":  "SHA-256:77ea0504172394202c8ab9fce4036d89deaede1ac46f125246c6a117b0ef4bd2",
+                                                               "size":  "218253724"
+                                                           },
+                                                           {
+                                                               "archiveFileName":  "Xuantie-900-gcc-linux64_2.6.1.zip",
+                                                               "host":  "x86_64-pc-linux-gnu",
+                                                               "url":  "https://github.com/bouffalolab/arduino-bouffalo/releases/download/1.0.5/Xuantie-900-gcc-linux64_2.6.1.zip",
+                                                               "checksum":  "SHA-256:ca90bfefd76113ae2ad6c2d1c2a11f78c15b8cd6b88815b2c222f055d20a5ebb",
+                                                               "size":  "186044182"
+                                                           },
+                                                           {
+                                                               "archiveFileName":  "Xuantie-900-gcc-linux64_2.6.1.zip",
+                                                               "host":  "i686-pc-linux-gnu",
+                                                               "url":  "https://github.com/bouffalolab/arduino-bouffalo/releases/download/1.0.5/Xuantie-900-gcc-linux64_2.6.1.zip",
+                                                               "checksum":  "SHA-256:ca90bfefd76113ae2ad6c2d1c2a11f78c15b8cd6b88815b2c222f055d20a5ebb",
+                                                               "size":  "186044182"
+                                                           },
+                                                           {
+                                                               "archiveFileName":  "xuantie-900-gcc-macos.tar.gz",
+                                                               "host":  "x86_64-apple-darwin",
+                                                               "url":  "https://github.com/bouffalolab/arduino-bouffalo/releases/download/1.0.5/xuantie-900-gcc-macos.tar.gz",
+                                                               "checksum":  "SHA-256:dec3e0cfe49b95e547b857962150b61b44fbdc1a80dbd1ccda150912873048c7",
+                                                               "size":  "168343291"
+                                                           },
+                                                           {
+                                                               "archiveFileName":  "xuantie-900-gcc-macos-arm64.tar.gz",
+                                                               "host":  "arm64-apple-darwin",
+                                                               "url":  "https://github.com/bouffalolab/arduino-bouffalo/releases/download/1.0.5/xuantie-900-gcc-macos-arm64.tar.gz",
+                                                               "checksum":  "SHA-256:b6c961fad5868a42a092740e048a12246e8dc52e5b2f46bf7bed9b57f6efb447",
+                                                               "size":  "154816768"
+                                                           }
+                                                       ],
+                                           "name":  "Xuantie-900-gcc",
+                                           "version":  "2.6.1"
+                                       }
+                                   ],
+                         "websiteURL":  "https://github.com/Ishu1519/BL602-Arduino-Core",
+                         "help":  {
+                                      "online":  "https://github.com/Ishu1519/BL602-Arduino-Core/issues"
+                                  },
+                         "maintainer":  "Ishu1519",
+                         "platforms":  [
+                                           {
+                                               "url":  "https://github.com/Ishu1519/BL602-Arduino-Core/releases/download/v0.1.0-alpha.2/bl602-0.1.0-alpha.2.zip",
+                                               "architecture":  "bl602",
+                                               "size":  "18441506",
+                                               "version":  "0.1.0-alpha.2",
+                                               "category":  "Contributed",
+                                               "name":  "BL602 Boards",
+                                               "boards":  [
+                                                              {
+                                                                  "name":  "Bouffalo Lab BL602"
+                                                              }
+                                                          ],
+                                               "help":  {
+                                                            "online":  "https://github.com/Ishu1519/BL602-Arduino-Core/issues"
+                                                        },
+                                               "archiveFileName":  "bl602-0.1.0-alpha.2.zip",
+                                               "toolsDependencies":  [
+                                                                         {
+                                                                             "name":  "Xuantie-900-gcc",
+                                                                             "version":  "2.6.1",
+                                                                             "packager":  "BL602"
+                                                                         }
+                                                                     ],
+                                               "checksum":  "SHA-256:362A9CCC23553785469479563D49D1985C9FE13DAC06B76638499376DE8C8617"
+                                           }
+                                       ]
+                     }
+                 ]
 }
