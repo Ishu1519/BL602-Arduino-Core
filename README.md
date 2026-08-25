@@ -2,7 +2,7 @@
 
 > An Arduino-compatible development workflow for Bouffalo Lab BL602, built on the native Bouffalo SDK and physically validated on real BL602C40 hardware.
 
-<img width="1905" height="1120" alt="Screenshot 2026-08-26 025654" src="https://github.com/user-attachments/assets/8f815c57-cc44-4707-953d-09e698d6093d" />
+<img width="1906" height="1122" alt="Screenshot 2026-08-26 032855" src="https://github.com/user-attachments/assets/cac1bc1a-ba77-484a-a6bb-a2e28835f8d2" />
 *Figure 1: Arduino IDE 2.3.10 uploading a BL602 sketch through the public Boards Manager package. Flash verification completed with `[All Success]` on real BL602C40 hardware.*
 
 > **Verified path**: Arduino IDE 2.3.10 -> Boards Manager -> compile -> `bflb_iot_tool` -> BL602C40 flash -> SHA-256 verification -> successful boot.
