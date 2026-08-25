@@ -43,7 +43,7 @@ compiler.c.flags=-c -g -Os {compiler.warning_flags} -std=gnu99 -ffunction-sectio
 recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags}  {includes} "{source_file}" -o "{object_file}"
 
 # Compile C++
-compiler.cpp.flags=-c -g -Os {compiler.warning_flags} -std=gnu++11 -fno-rtti -fno-exceptions -ffunction-sections -fdata-sections {compiler.riscv.flags}
+compiler.cpp.flags=-c -g -Os {compiler.warning_flags} -std=gnu++11 -fno-rtti -fno-exceptions -ffunction-sections -fdata-sections -isystem "{compiler.path}../riscv64-unknown-elf/include/c++/10.2.0/riscv64-unknown-elf/rv32imafc/ilp32f" {compiler.riscv.flags}
 recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags}  {includes} "{source_file}" -o "{object_file}"
 
 # Archive
@@ -75,6 +75,7 @@ recipe.S.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -x assem
 build.extra_flags=
 compiler.c.extra_flags=
 compiler.cpp.extra_flags=
+
 
 
 
