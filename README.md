@@ -2,7 +2,7 @@
 
 > An Arduino-compatible development workflow for Bouffalo Lab BL602, built on the native Bouffalo SDK and physically validated on real BL602C40 hardware.
 
-![Arduino IDE Upload Success](docs/images/arduino-ide-upload-success.png)
+<img width="1905" height="1120" alt="Screenshot 2026-08-26 025654" src="https://github.com/user-attachments/assets/8f815c57-cc44-4707-953d-09e698d6093d" />
 *Figure 1: Arduino IDE 2.3.10 uploading a BL602 sketch through the public Boards Manager package. Flash verification completed with `[All Success]` on real BL602C40 hardware.*
 
 [![GitHub Release](https://img.shields.io/github/v/release/Ishu1519/BL602-Arduino-Core?include_prereleases&color=00979D&label=release)](https://github.com/Ishu1519/BL602-Arduino-Core/releases/latest)
